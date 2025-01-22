@@ -1,0 +1,33 @@
+{
+  "name": "email-sender",
+  "version": "1.0.0",
+  "description": "A NestJS service for sending email reports from the daily_sales_report queue.",
+  "main": "dist/main.js",
+  "scripts": {
+    "start": "node dist/main.js",
+    "build": "tsc",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@nestjs/common": "^9.0.0",
+    "@nestjs/core": "^9.0.0",
+    "@nestjs/platform-express": "^9.0.0",
+    "rxjs": "^7.0.0",
+    "nodemailer": "^6.0.0"
+  },
+  "devDependencies": {
+    "@nestjs/testing": "^9.0.0",
+    "typescript": "^4.0.0",
+    "jest": "^27.0.0",
+    "ts-jest": "^27.0.0",
+    "@types/jest": "^27.0.0",
+    "@types/node": "^16.0.0"
+  },
+  "keywords": [
+    "nestjs",
+    "email",
+    "report"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}

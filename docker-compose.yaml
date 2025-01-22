@@ -1,0 +1,41 @@
+services:
+  invoice-service:
+    build: ./invoice-service
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=${MONGO_URI}
+    depends_on:
+      - mongo
+      - rabbitmq
+
+  email-sender:
+    build: ./email-sender
+    ports:
+      - "3001:3001"
+    environment:
+      - RABBITMQ_URI=${RABBITMQ_URI}
+    depends_on:
+      - rabbitmq
+
+  report-generator:
+    build: ./report-generator
+    ports:
+      - "3002:3002"
+    environment:
+      - MONGO_URI=${MONGO_URI}
+      - RABBITMQ_URI=${RABBITMQ_URI}
+    depends_on:
+      - mongo
+      - rabbitmq
+
+  mongo:
+    image: mongo:6
+    ports:
+      - "27017:27017"
+
+  rabbitmq:
+    image: rabbitmq:4-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"

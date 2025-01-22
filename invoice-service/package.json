@@ -1,0 +1,33 @@
+{
+  "name": "invoice-creation-service",
+  "version": "1.0.0",
+  "description": "A NestJS service for creating and managing invoices.",
+  "main": "dist/main.js",
+  "scripts": {
+    "start": "nest start",
+    "build": "nest build",
+    "test": "jest",
+    "test:e2e": "jest --config test/jest-e2e.json"
+  },
+  "dependencies": {
+    "@nestjs/common": "^9.0.0",
+    "@nestjs/core": "^9.0.0",
+    "@nestjs/mongoose": "^9.0.0",
+    "mongoose": "^6.0.0",
+    "rxjs": "^7.0.0"
+  },
+  "devDependencies": {
+    "@nestjs/testing": "^9.0.0",
+    "jest": "^27.0.0",
+    "supertest": "^6.0.0",
+    "ts-jest": "^27.0.0",
+    "typescript": "^4.5.0"
+  },
+  "keywords": [
+    "nestjs",
+    "invoices",
+    "mongodb"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}
