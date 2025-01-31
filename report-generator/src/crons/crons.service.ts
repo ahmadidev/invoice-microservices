@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Cron, Interval } from '@nestjs/schedule';
+import { Cron } from '@nestjs/schedule';
 import { InvoicesService } from '../invoices/invoices.service';
 import { RabbitmqService } from '@/rabbitmq/rabbitmq.service';
-import { ReportSummaryDto } from './report-summary.dto';
+import { ReportSummaryDto } from '../shared/report-summary.dto';
 
 @Injectable()
 export class CronsService {
@@ -14,8 +14,8 @@ export class CronsService {
     ) { }
 
     // Use interval to easily debug the cron job
-    @Interval(10000)
-    // @Cron('0 12 * * *')
+    // @Interval(10000)
+    @Cron('0 12 * * *')
     async salesReportCron() {
         try {
             this.logger.debug(`Running CronJob at ${new Date().toTimeString()}.`);
