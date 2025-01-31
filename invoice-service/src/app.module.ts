@@ -4,7 +4,7 @@ import { InvoicesModule } from './invoices/invoices.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.MONGO_URI || 'mongodb://localhost:27017/invoices'),
+    MongooseModule.forRoot(process.env.MONGO_URI || 'mongodb://localhost:27017/invoice'),
     InvoicesModule,
   ],
 })

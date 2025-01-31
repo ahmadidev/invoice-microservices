@@ -1,35 +1,42 @@
-import { Injectable } from '@nestjs/common';
-import { EmailReport } from './email-sender.interface';
-import { QueueService } from './queue.service'; // Assuming you have a QueueService to handle message consumption
-import { EmailService } from './email.service'; // Assuming you have an EmailService to handle email sending
+import { Injectable, Logger } from '@nestjs/common';
+import { ReportSummaryDto } from '../shared/report-summary.dto';
 
 @Injectable()
 export class EmailSenderService {
-  constructor(
-    private readonly queueService: QueueService,
-    private readonly emailService: EmailService,
-  ) {
-    this.queueService.onMessage(this.receiveReport.bind(this));
+  private readonly logger = new Logger(EmailSenderService.name);
+
+  async sendEmail(reportSummaryDto: ReportSummaryDto) {
+    this.logger.log("Sending email with content", reportSummaryDto, typeof reportSummaryDto.generatedAt);
+    const emailContent = this.createEmailContent(reportSummaryDto);
+
+    // In a real-world application, the recipient would be taken from the report object
+    const recipient = "sales@payever.org"
+
+    // Use the email provider to send the email
+    // await this.emailProdiver.send({
+    //   to: report.recipient,
+    //   subject: 'Daily Sales Report',
+    //   text: emailContent,
+    // });
+
+    this.logger.log(`Email sent to ${recipient} with content: ${emailContent}`);
   }
 
-  async receiveReport(report: EmailReport) {
-    try {
-      await this.sendEmail(report);
-    } catch (error) {
-      console.error('Error sending email:', error);
-    }
-  }
-
-  async sendEmail(report: EmailReport) {
-    const emailContent = this.createEmailContent(report);
-    await this.emailService.send({
-      to: report.recipient,
-      subject: 'Daily Sales Report',
-      text: emailContent,
-    });
-  }
-
-  private createEmailContent(report: EmailReport): string {
-    return `Sales Summary Report:\n\n${report.summary}`;
+  private createEmailContent(reportSummaryDto: ReportSummaryDto): string {
+    return `
+          Subject: Daily Sales Report - ${reportSummaryDto.generatedAt.toString()}
+          
+          Dear Team,
+          
+          Here is the sales report for ${reportSummaryDto.generatedAt.toDateString()}:
+          
+          Total Sales: $${reportSummaryDto.totalSales}
+          
+          Total Quantity Sold by SKU:
+          ${reportSummaryDto.totalSkuQuantities.map(item => `- SKU: ${item.sku}, Quantity: ${item.qt}`).join('\n\t\t')}
+          
+          Best regards,  
+          Your Sales Team
+      `;
   }
 }

@@ -2,26 +2,34 @@
   "name": "email-sender",
   "version": "1.0.0",
   "description": "A NestJS service for sending email reports from the daily_sales_report queue.",
-  "main": "dist/main.js",
   "scripts": {
-    "start": "node dist/main.js",
-    "build": "tsc",
+    "start": "nest start",
     "test": "jest"
   },
   "dependencies": {
-    "@nestjs/common": "^9.0.0",
-    "@nestjs/core": "^9.0.0",
-    "@nestjs/platform-express": "^9.0.0",
-    "rxjs": "^7.0.0",
+    "@nestjs/common": "11.0.5",
+    "@nestjs/core": "11.0.5",
+    "@nestjs/microservices": "^11.0.6",
+    "amqp-connection-manager": "^4.1.14",
+    "amqplib": "^0.8.0",
     "nodemailer": "^6.0.0"
   },
   "devDependencies": {
-    "@nestjs/testing": "^9.0.0",
-    "typescript": "^4.0.0",
-    "jest": "^27.0.0",
-    "ts-jest": "^27.0.0",
-    "@types/jest": "^27.0.0",
-    "@types/node": "^16.0.0"
+    "@eslint/eslintrc": "3.2.0",
+    "@eslint/js": "9.18.0",
+    "@nestjs/cli": "^11.0.2",
+    "@nestjs/testing": "11.0.5",
+    "@types/jest": "29.5.14",
+    "@types/node": "22.10.10",
+    "eslint": "9.18.0",
+    "eslint-plugin-prettier": "5.2.3",
+    "globals": "15.14.0",
+    "jest": "29.7.0",
+    "prettier": "3.4.2",
+    "ts-jest": "29.2.5",
+    "tsconfig-paths": "4.2.0",
+    "typescript": "5.7.3",
+    "typescript-eslint": "8.21.0"
   },
   "keywords": [
     "nestjs",

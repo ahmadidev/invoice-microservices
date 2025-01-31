@@ -5,6 +5,25 @@ services:
       - "3000:3000"
     environment:
       - MONGO_URI=${MONGO_URI}
+    volumes:
+      - type: bind
+        source: ./invoice-service/node_modules/
+        target: /app/node_modules/
+    depends_on:
+      - mongo
+      - rabbitmq
+
+  report-generator:
+    build: ./report-generator
+    ports:
+      - "3002:3002"
+    environment:
+      - MONGO_URI=${MONGO_URI}
+      - RABBITMQ_URI=${RABBITMQ_URI}
+    volumes:
+      - type: bind
+        source: ./report-generator/node_modules/
+        target: /app/node_modules/
     depends_on:
       - mongo
       - rabbitmq
@@ -15,18 +34,11 @@ services:
       - "3001:3001"
     environment:
       - RABBITMQ_URI=${RABBITMQ_URI}
+    volumes:
+      - type: bind
+        source: ./email-sender/node_modules/
+        target: /app/node_modules/
     depends_on:
-      - rabbitmq
-
-  report-generator:
-    build: ./report-generator
-    ports:
-      - "3002:3002"
-    environment:
-      - MONGO_URI=${MONGO_URI}
-      - RABBITMQ_URI=${RABBITMQ_URI}
-    depends_on:
-      - mongo
       - rabbitmq
 
   mongo:

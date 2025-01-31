@@ -1,10 +1,10 @@
-import { Controller, Post, Get, Param, Body } from '@nestjs/common';
+import { Controller, Post, Get, Param, Body, Query } from '@nestjs/common';
 import { InvoicesService } from './invoices.service';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 
 @Controller('invoices')
 export class InvoicesController {
-  constructor(private readonly invoicesService: InvoicesService) {}
+  constructor(private readonly invoicesService: InvoicesService) { }
 
   @Post()
   create(@Body() createInvoiceDto: CreateInvoiceDto) {
@@ -17,7 +17,16 @@ export class InvoicesController {
   }
 
   @Get()
-  findAll() {
-    return this.invoicesService.findAll();
+  findAll(
+    @Query('startDate') startDate?: Date,
+    @Query('endDate') endDate?: Date
+  ) {
+    if (startDate && endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      return this.invoicesService.findByDateRange(start, end);
+    } else {
+      return this.invoicesService.findAll();
+    }
   }
 }

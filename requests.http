@@ -1,0 +1,20 @@
+GET http://10.1.1.2:3000/invoices
+
+GET http://10.1.1.2:3000/invoices/?startDate=2025-02-30&endDate=2025-04-31
+
+GET http://10.1.1.2:3000/invoices/6793530f02663be2e6d48865
+
+POST http://10.1.1.2:3000/invoices
+Content-Type: application/json
+
+{
+  "customer": "Ahmad",
+  "amount": 100,
+  "reference": "A33",
+  "date": "2025/01/30 12:00:02",
+  "items": [
+    { "sku": "DG334", "qt": 2 },
+    { "sku": "DG335", "qt": 1 },
+    { "sku": "DG336", "qt": 3 }
+  ]
+}
