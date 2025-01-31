@@ -6,7 +6,7 @@ export class EmailSenderService {
   private readonly logger = new Logger(EmailSenderService.name);
 
   async sendEmail(reportSummaryDto: ReportSummaryDto) {
-    this.logger.log("Sending email with content", reportSummaryDto, typeof reportSummaryDto.generatedAt);
+    this.logger.debug("Sending email with content", reportSummaryDto, typeof reportSummaryDto.generatedAt);
     const emailContent = this.createEmailContent(reportSummaryDto);
 
     // In a real-world application, the recipient would be taken from the report object
@@ -19,10 +19,10 @@ export class EmailSenderService {
     //   text: emailContent,
     // });
 
-    this.logger.log(`Email sent to ${recipient} with content: ${emailContent}`);
+    this.logger.debug(`Email sent to ${recipient} with content: ${emailContent}`);
   }
 
-  private createEmailContent(reportSummaryDto: ReportSummaryDto): string {
+  createEmailContent(reportSummaryDto: ReportSummaryDto): string {
     return `
           Subject: Daily Sales Report - ${reportSummaryDto.generatedAt.toString()}
           

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { RabbitmqModule } from './rabbitmq/rabbitmq.module';
-import { RabbitmqService } from './rabbitmq/rabbitmq.service';
+import { RabbitmqController } from './rabbitmq/rabbitmq.controller';
 import { EmailSenderModule } from './email-sender/email-sender.module';
 
 @Module({
@@ -8,6 +8,6 @@ import { EmailSenderModule } from './email-sender/email-sender.module';
     EmailSenderModule,
     RabbitmqModule
   ],
-  providers: [RabbitmqService],
+  providers: [RabbitmqController],
 })
 export class AppModule { }

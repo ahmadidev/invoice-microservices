@@ -6,16 +6,20 @@ import { ReportSummaryDto } from './report-summary.dto';
 
 @Injectable()
 export class CronsService {
-    constructor(private readonly invoicesService: InvoicesService,
+    private readonly logger = new Logger(CronsService.name);
+
+    constructor(
+        private readonly invoicesService: InvoicesService,
         private readonly rabbitmqService: RabbitmqService
     ) { }
-    private readonly logger = new Logger(CronsService.name);
 
     // Use interval to easily debug the cron job
     @Interval(10000)
     // @Cron('0 12 * * *')
     async salesReportCron() {
         try {
+            this.logger.debug(`Running CronJob at ${new Date().toTimeString()}.`);
+
             const reportSummary: ReportSummaryDto = new ReportSummaryDto();
             const today = new Date();
             const startOfDay = new Date(today.setHours(0, 0, 0, 0));
@@ -43,7 +47,7 @@ export class CronsService {
                 .sendMessage('daily_sales_report', reportSummary)
                 .catch((error) => { this.logger.error('Error sending message to queue:', error); });
 
-            this.logger.debug('Report is pushed to queue.', reportSummary);
+            this.logger.debug('Report is pushed to daily_sales_report queue.', reportSummary);
         } catch (error) {
             this.logger.error('Error generating and publishing daily sales summary:', error);
         }

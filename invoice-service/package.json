@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "A NestJS service for creating and managing invoices.",
   "scripts": {
+    "build": "nest build",
     "start": "nest start",
+    "start:prod": "node dist/main",
     "test": "jest",
     "test:unit": "jest src/tests/unit/*.test.ts",
     "test:integration": "MONGOMS_DOWNLOAD_DIR=/app/node_modules/mongodb-binaries/ jest src/tests/integration/*.test.ts"

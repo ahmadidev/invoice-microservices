@@ -1,10 +1,12 @@
-GET http://10.1.1.2:3000/invoices
+## Can be used with httpyac or REST Client extensions in VSCode
 
-GET http://10.1.1.2:3000/invoices/?startDate=2025-02-30&endDate=2025-04-31
+GET http://localhost:3000/invoices
 
-GET http://10.1.1.2:3000/invoices/6793530f02663be2e6d48865
+GET http://localhost:3000/invoices/?startDate=2025-02-30&endDate=2025-04-31
 
-POST http://10.1.1.2:3000/invoices
+GET http://localhost:3000/invoices/6793530f02663be2e6d48865
+
+POST http://localhost:3000/invoices
 Content-Type: application/json
 
 {

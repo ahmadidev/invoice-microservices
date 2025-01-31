@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "A service to generate daily sales summary reports and push to the daily_sales_report queue.",
   "scripts": {
+    "build": "nest build",
     "start": "nest start",
+    "start:prod": "node dist/main",
     "test": "jest"
   },
   "dependencies": {

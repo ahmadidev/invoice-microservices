@@ -1,14 +1,21 @@
-import { Controller, Post, Get, Param, Body, Query } from '@nestjs/common';
+import { Controller, Post, Get, Param, Body, Query, InternalServerErrorException, Logger } from '@nestjs/common';
 import { InvoicesService } from './invoices.service';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 
 @Controller('invoices')
 export class InvoicesController {
+  private readonly logger = new Logger(InvoicesService.name);
+  
   constructor(private readonly invoicesService: InvoicesService) { }
 
   @Post()
   create(@Body() createInvoiceDto: CreateInvoiceDto) {
-    return this.invoicesService.create(createInvoiceDto);
+    try {
+      return this.invoicesService.create(createInvoiceDto);
+    } catch (error) {
+      this.logger.error("Failed to create Invoice", createInvoiceDto, error);
+      throw new InternalServerErrorException('Error creating invoice');
+    }
   }
 
   @Get(':id')

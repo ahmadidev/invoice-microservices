@@ -7,7 +7,7 @@ docker compose up --build
 
 ## Project Overview
 
-The Invoice Service is a microservice-based application designed to manage invoices. It is built using NestJS, and MongoDB as the database, and RabbitMQ to emit daily sale reports to be sent by Email. The project is containerized using Docker and orchestrated using Docker Compose.
+The Invoice Service is a microservice-based application designed to manage invoices. It is built using NestJS, MongoDB for data storage, and RabbitMQ for emitting daily sales reports via email. The project is containerized using Docker and orchestrated using Docker Compose.
 
 #### Microservices
 The project consists of the following microservices:
@@ -31,13 +31,19 @@ Due to the possibility of the invoice service crashing or the need to scale it a
 
 
 ## Development
+### REST Api sample requests
+Please refer to [requests.http](requests.http) to see possible API requests.
+
+
 ### Docker Commands for Development
-To keep consistency, it's prefered to run commands inside docker containers.
+Running commands locally is an option, but using Docker ensures consistency.
 
 #### Running tests and installing packages
 ```
 # cd to project root then run:
 docker run -it --mount type=bind,src=./invoice-service,dst=/app node:23 bash
+
+# Ensure you are inside the /app directory before running these commands:
 cd /app
 
 # To run all tests
@@ -55,6 +61,7 @@ npm install [package]
 
 #### Operate on MongoDB
 ```
+# To inspect inserted invoices
 docker compose exec -it mongo mongosh
 use invoice
 db.invoices.find()
@@ -63,13 +70,23 @@ db.invoices.find()
 #### Operate on RabbitMQ
 ```
 docker compose exec -it rabbitmq bash
+# list active queues
 rabbitmqctl list_queues
+
+# list messages in a specific queue
 rabbitmqadmin get queue=daily_sales_report
 ```
 
 ### Reason behind bind-mounting node_modules folders
 To speed up development and prevent downloading node modules each time the services run, we mounted local `node_modules` folder to the container.
 
+[Like this section](docker-compose.yaml#9)
+```
+volumes:
+- type: bind
+   source: ./invoice-service/node_modules/
+   target: /app/node_modules/
+```
 
 ### Testing email-sender service's CronJobs
 Because CronJobs run once a day, to test salesReportCron, uncomment `@Interval` and comment [`@Cron`](./report-generator/src/crons/crons.service.ts#16).
@@ -77,9 +94,18 @@ Because CronJobs run once a day, to test salesReportCron, uncomment `@Interval` 
 
 ## Production Considerations
 
-- **Helm Charts**: Create Helm charts for each service to streamline deployment to Kubernetes infrastructure.
-- **CI/CD Pipelines**: Leverage CI/CD pipelines to build, test, and deploy for rapid value delivery to customers.
-- **Authentication and Authorization**: Set up authentication and authorization for the invoice service.
-- **Input Validation**: Ensure input validation for the Invoice REST API.
-- **MongoDB Authentication**: Enable authentication for MongoDB.
-- **RabbitMQ Authentication**: Enable authentication for RabbitMQ.
+### **🔒 Security**
+- **Authentication & Authorization**: Implement authentication and authorization for the Invoice Service.
+- **MongoDB & RabbitMQ Authentication**: Enable authentication for MongoDB and RabbitMQ to prevent unauthorized access.
+- **Input Validation**: Ensure strict validation for API inputs to prevent injection attacks and data corruption.
+
+### **⚡ Scalability & Performance**
+- **Helm Charts**: Create Helm charts for each service to simplify Kubernetes deployments.
+- **CI/CD Pipelines**: Automate build, test, and deployment processes for faster iteration.
+- **Load & Stress Testing**: Perform load and stress tests to ensure the system can handle expected traffic.
+- **Optimize Dockerfiles**: Use multi-stage builds and prebuilt NestJS applications (`npm build`, `npm start:prod`) to improve container efficiency.
+
+### **📊 Monitoring & Reliability**
+- **Observability Tools**: Use Prometheus and Loki for monitoring resource usage, logs, and service health.
+- **Message Acknowledgment**: Implement manual acknowledgment for RabbitMQ messages to prevent data loss.
+- **Crash Recovery**: Ensure services restart automatically after crashes and handle failures gracefully.

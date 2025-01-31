@@ -10,7 +10,7 @@ async function bootstrap() {
       queue: 'daily_sales_report',
       queueOptions: {
         durable: true,
-      },
+      }
     },
   });
 

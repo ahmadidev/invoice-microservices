@@ -4,13 +4,6 @@ import { InvoicesController } from '../../invoices/invoices.controller';
 import { InvoicesService } from '../../invoices/invoices.service';
 import { CreateInvoiceDto } from '../../invoices/dto/create-invoice.dto';
 
-const invoicesServiceMock = {
-    create: jest.fn(),
-    findOne: jest.fn(),
-    findAll: jest.fn(),
-    findByDateRange: jest.fn()
-};
-
 describe('InvoicesController', () => {
     let controller: InvoicesController;
     let service: jest.Mocked<InvoicesService>;
@@ -21,7 +14,12 @@ describe('InvoicesController', () => {
             providers: [
                 {
                     provide: InvoicesService,
-                    useValue: invoicesServiceMock,
+                    useValue: {
+                        create: jest.fn(),
+                        findOne: jest.fn(),
+                        findAll: jest.fn(),
+                        findByDateRange: jest.fn()
+                    },
                 },
             ],
         }).compile();

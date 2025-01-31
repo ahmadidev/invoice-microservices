@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "A NestJS service for sending email reports from the daily_sales_report queue.",
   "scripts": {
+    "build": "nest build",
     "start": "nest start",
+    "start:prod": "node dist/main",
     "test": "jest"
   },
   "dependencies": {

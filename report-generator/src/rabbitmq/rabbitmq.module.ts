@@ -6,10 +6,10 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
   imports: [
     ClientsModule.register([
       {
-        name: RabbitmqService.name,
+        name: 'RABBITMQ_CLIENT',
         transport: Transport.RMQ,
         options: {
-          urls: [process.env.RABBITMQ_URI || 'amqp://localhost:5672'],
+          urls: [process.env.RABBITMQ_URI],
           queue: 'daily_sales_report',
           exchange: 'amq.direct',
           queueOptions: {
