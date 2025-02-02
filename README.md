@@ -5,6 +5,10 @@
 docker compose up --build
 ```
 
+#### Note on `report_generator` service
+Due to the possibility of the invoice service crashing or the need to scale it as demanded, we decided to extract the `CronJob` role into this separate service.
+
+
 ## Project Overview
 
 The Invoice Service is a microservice-based application designed to manage invoices. It is built using NestJS, MongoDB for data storage, and RabbitMQ for emitting daily sales reports via email. The project is containerized using Docker and orchestrated using Docker Compose.
@@ -24,10 +28,6 @@ The project consists of the following microservices:
 4. **MongoDB**: Storage for invoices.
 
 5. **RabbitMQ**: Hosts the `daily_sales_report` queue.
-
-
-#### Note on `report_generator` service
-Due to the possibility of the invoice service crashing or the need to scale it as demanded, we decided to extract the `CronJob` role into this separate service.
 
 
 ## Development
@@ -77,20 +77,8 @@ rabbitmqctl list_queues
 rabbitmqadmin get queue=daily_sales_report
 ```
 
-### Reason behind bind-mounting node_modules folders
-To speed up development and prevent downloading node modules each time the services run, we mounted local `node_modules` folder to the container.
-
-[Like this section](docker-compose.yaml#9)
-```
-volumes:
-- type: bind
-   source: ./invoice-service/node_modules/
-   target: /app/node_modules/
-```
-
 ### Testing email-sender service's CronJobs
 Because CronJobs run once a day, to test salesReportCron, uncomment `@Interval` and comment [`@Cron`](./report-generator/src/crons/crons.service.ts#16).
-
 
 ## Production Considerations
 
